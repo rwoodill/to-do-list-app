@@ -10,6 +10,8 @@ Scss(app)
 
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+#below line for deployment
+#app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
 db = SQLAlchemy(app)
 
 
@@ -22,6 +24,9 @@ class MyTask(db.Model):
 
     def __repr__(self):
         return f"Task {self.id}"
+
+with app.app_context():
+    db.create_all()
 
 
 # Routes to webpages
@@ -78,6 +83,7 @@ def update(id:int):
 
 
 # Run the app
+#change 'in' to == for deployment
 if __name__ in "__main__":
     with app.app_context():
         db.create_all()
